@@ -62,7 +62,7 @@ MVVM(Model-view-viewmodel)是一种软件架构模式，MVVM有助于将图形�
 
 #### 4. 1 生命周期图示
 
-![The Vue Instance Lifecycle](https://vuejs.org/images/lifecycle.png)
+<img src="https://vuejs.org/images/lifecycle.png" alt="The Vue Instance Lifecycle" style="zoom: 50%;" />
 
 ## 5-vue基础语法
 
