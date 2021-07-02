@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+  <!-- 父组件模板 -->
+  <div id='app'>
+    <cpn @itemclick="cpnClick" @counter="cpnCount"></cpn>
+    <h2>当前计数:{{total}}</h2>
+  </div>
+
+  <!-- 子组件模板 -->
+  <template id='cpn'>
+    <div>
+      <button v-for="item in categories" @click="btnClick(item)">{{item.name}}</button>
+      <button @click="increment">+</button>
+      <button @click="decrement">-</button>
+    </div>
+  </template>
+
+  <script src="../js/vue.js"></script>
+  <script> 
+    const cpn = {
+      template: '#cpn',
+      data(){
+        return{
+          categories:[
+            {id: 'aaa', name:'热门推荐'},
+            {id: 'bbb', name:'手机数码'},
+            {id: 'ccc', name:'家用家电'},
+            {id: 'ddd', name:'电脑办公'}
+          ],
+          counter: 0
+        }
+      },
+    methods: {
+      btnClick(item){
+        // 发送事件 自定义事件
+        this.$emit('itemclick', item)
+      },
+      increment(){
+          this.counter++
+          this.$emit('counter', this.counter)
+      },
+      decrement(){
+          this.counter--
+          this.$emit('counter', this.counter)
+      }
+     }
+    }
+
+    const app = new Vue({
+    el:'#app',
+    data:{
+        info:{
+          name: 'wly',
+          age: 18,
+          height: 1.88
+        },
+        message: 'hi',
+        total: 0
+    },
+    components:{
+      cpn
+    },
+    methods: {
+      cpnClick(item){
+        console.log(item)
+      },
+      cpnCount(counter){
+          this.total = counter
+      }
+     }
+    })
+  </script>
+</body>
+</html>

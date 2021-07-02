@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+  <div id='app'>
+    <img v-bind:src="imgURL" alt="">
+    <a v-bind:href="aHref">Google</a>
+
+    <!-- 语法糖写法 -->
+    <img :src="imgURL" alt="">
+    <a :href="aHref">Google</a>
+
+  </div>
+  <script src="../js/vue.js"></script>
+  <script>
+  const app = new Vue({
+    el:'#app',
+    data:{
+      message:'hi',
+      imgURL:'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAMAAAAJbSJIAAAAb1BMVEX///8AAADGxsalpaWcnJzU1NSgoKDz8/Pg4OBVVVWXl5fu7u7d3d25ublzc3OTk5M5OTmvr6/5+flmZmaHh4dERETn5+cfHx8wMDC/v796enpubm4kJCTOzs6MjIxHR0ddXV0QEBA9PT0XFxcLCwvSEYxCAAABxElEQVR4nO3cUW+aYBiGYdACKmKVWjexVrv1///GuoZtgThTXDfky3UdeULy3onBE/NEEQAAAAAAAAAAAAAAAPBf5fMiXUzjvs/4F7KkuF8s41rf13yqTbK6f3iMm/o+6lOUm9Fq/fAlPqvv4/7SZDReT7+eTxt2YTbZjqvpxbKhFpbJ9q56/MMXctiFeVLMdu23SDiFxdMVabdfmCer2e4Q708f764PvMnCfF887369IJMooMLNfvV8XLYuDKLw9Is9Xh9fzl847MJyPkqr6eXXyEALs/k2XRw+dOEgC5ffO1w4yMJOFypUqFChQoUKFSpUqFChQoUKFSpUqFChQoUKFSpUqFChQoXDKpwNrXDURRb9+Bvp9XophNuXjj8uzU8PJF2eaD3fS2H479LOheH/HipUqFChQoUKFSpUqFChQoUKFSpUqFChQoUKFSpUqFChwpst7DJGNszCqMwvzAAGUfjT+5Tjt5ALa805zhALa++Tqof2/lBIhbVyvk2rw2vAhbVsMhpXx6cgN/eayijY3cSmwLcvfwt4v7Qp4A3alnB3hJtC3oJuCnfPuyXgTfamgHf1AQAAAAAAAAAAAAAA4DpvjIo01MCHfCUAAAAASUVORK5CYII=',
+      aHref:'https://www.google.com.hk/'
+    }
+  })
+  </script>
+</body>
+</html>

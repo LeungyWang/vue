@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<!-- 
+    1. 插槽的基本使用
+    2. 插槽的默认值 <slot></slot>
+    3. 如果有多个值, 同时放入到组件中进行替换时,一起作为替换元素
+ -->
+  <div id='app'>
+    <cpn><span slot="middle">标题</span></cpn>
+  </div>
+
+  <template id="cpn">
+    <div>
+      <slot name="left"><span>left</span></slot>
+      <slot name="middle"><span>middle</span></slot>
+      <slot name="right"><span>right</span></slot>
+  </div>
+  </template>
+
+  <script src="../js/vue.js"></script>
+  <script>
+  
+
+  const app = new Vue({
+    el:'#app',
+    data:{
+      message:'hi'
+    },
+    components:{
+      cpn:{
+        template: "#cpn"
+      }
+    }
+  })
+  </script>
+</body>
+</html>
