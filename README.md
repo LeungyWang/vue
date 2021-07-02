@@ -921,4 +921,4 @@ let flag = _mA.flag
 
 ​	webpack其中一个核心就是进行模块化开发，并且会帮着开发者处理模块间的依赖关系。不仅仅是JavaScript文
 
-件，CSS、图片、json文件等等在webpack中都可以被当作模块来使用
+件，CSS、图片、json文件等等在webpack中都可以被当作模块来使用的
