@@ -922,3 +922,170 @@ let flag = _mA.flag
 ​	webpack其中一个核心就是进行模块化开发，并且会帮着开发者处理模块间的依赖关系。不仅仅是JavaScript文
 
 件，CSS、图片、json文件等等在webpack中都可以被当作模块来使用的
+
+### 17.3 js文件的打包
+
+在真实项目当中有许多js文件，一个个的引用非常麻烦，并且后期非常不方便对它们进行管理
+
+因此可以使用webpack工具对这些js文件进行打包，webpack是一个模块化的打包工具，所以它支持代码
+
+中写模块化，可以对模块化的代码进行处理，在处理完所有模块之间的关系后，将多个js打包到一个js文
+
+件中引入就会变得非常方便。
+
+ webpack打包指令：
+
+`webpack src/main.js dist/bundle.js`
+
+将生成的bundle.js文件在index.html中引入即可
+
+#### 17.3.1 webpack.config.js配置文件
+
+如果每次使用webpack的命令都需要写上入口和出口作为参数，就非常麻烦，可以将入口和出口都写入`webpack.config.js`配置文件中进行配置
+
+```javascript
+const path = require('path')
+
+module.export = {
+ 	// 入口：可以是字符串/数组/对象
+  entry:'./src/main.js',
+  // 出口：通常是一个对象，里面至少包含两个重要属性，path和filename
+  output:{
+    path: path.resolve(__dirname, 'dist'),
+    filename: 'bundle.js'
+  }
+}
+```
+
+#### 17.3.2 局部安装webpack
+
+上述所使用的webpack是全局的webpack，通常一个项目都有自己的局部webpack
+
+* 因为一个项目往往依赖特定的webpack版本，全局的版本可能与这个项目的webpack版本不一致，导致打包出现问题
+
+安装指令：
+
+`npm install webpack@3.6.0 --save-dev`
+
+通过node_modules/.bin/webpack启动webpack打包
+
+`node_modules/.bin/webpack`
+
+#### 17.3.4 package.json中定义启动
+
+如果每次打包都要输入上述指令，会将打包程序变得很复杂
+
+因此我们可以在package.json中的scripts的脚本中定义自己的执行脚本，在执行时，会按照一定的顺序寻找命令所对应的位置
+
+* 首先，会寻找本地的node_modules/.bin路径中对应的命令
+* 如果没有找到，就会到全局变量中寻找
+
+```json
+{
+  "name": "meetwebpack",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "webpack": "^3.6.0"
+  }
+}
+```
+
+在srcipts中，定义了build命令的启动命令，因此我们可以通过build指令执行webpack指令
+
+build指令执行：
+
+`npm run build`
+
+### 17.4 loader
+
+loader是webpack中一个非常核心的概念
+
+webpack的作用:
+
+* webpack可以用来处理js代码，并且webpack会自动js之间相关的依赖
+* 但是，在开发中不仅仅有基本的js代码需要处理，也需要加载css、图片、也包括一些高级的将ES6转成ES5代码，将TypeScript转称ES5代码，将scss、less转成css，将.jsx、,vue转成js文件等待
+* 对于webpack自身能力来说，对于这些转化是不支持的
+* 但是给webpack扩展对应的loader就可以了
+
+loader使用流程：
+
+1.  通过npm安装需要使用的loader
+2. 在webpack.config.js中的modules关键字下配置
+
+大部分的loader都可以以在[webpack官网](https://webpack.js.org/)中找到，并学习对应的用法
+
+#### 17.4.1 css-loader
+
+`css-loader`用来处理css文件
+
+安装 `css-loader`:
+
+`npm install --save-dev css-loader`
+
+配置webpack.config.js文件:
+
+```json
+const path = require('path')
+
+module.exports = {
+    entry: './src/main.js',
+    output:{
+        path: path.resolve(__dirname, 'dist'),
+        filename: 'bundle.js'
+    },
+    module: {
+        rules: [
+            {
+              test: /\.css$/i,
+              // css-loader只负责将css样式加载
+              // style-loader负责将样式添加到DOM中
+              // 使用多个loader时，从又向左
+              use: ["style-loader","css-loader"],
+            },
+          ],
+    }
+}
+```
+
+**注意**：style-loader需要放在css-loader的前面，因为webpack在读取使用loader的过程中，是按照从右往左的顺序读取的
+
+#### 17.4.2 less-loader
+
+`less-loader`用来处理less文件
+
+安装`less-loader`：
+
+`npm install --save-dev less-loader less`
+
+修改对应的配置文件，添加rules选项，用于处理.less文件
+
+```json
+module.exports = {
+  module: {
+    rules: [
+      {
+        test: /\.less$/i,
+        loader: [
+          // compiles Less to CSS
+          "style-loader",
+          "css-loader",
+          "less-loader",
+        ],
+      },
+    ],
+  },
+};
+```
+
+#### 17.4.3 url-loader
+
+#### 17.4.4 file-loader
+
