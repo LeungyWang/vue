@@ -1,4 +1,4 @@
-# vue
+#  nvue
 code recorded in the process of learning vue
 
 ## 1-vue初体验
@@ -677,8 +677,6 @@ props用于父组件向子组件传递数据，还有一种比较常见的是子
 * 当子组件过多时，往往不能确定索引值，索引值甚至可能发生变化
 * 当需要明确获取其中一个特定的组件时，这个时候可以用\$refs
 
-
-
 \$refs的使用：
 
 * \$refs和ref指令通常是一起使用的
@@ -1022,7 +1020,7 @@ loader使用流程：
 
 大部分的loader都可以以在[webpack官网](https://webpack.js.org/)中找到，并学习对应的用法
 
-#### 17.4.1 css-loader
+#### 17.4.1 css-loader-css文件处理
 
 `css-loader`用来处理css文件
 
@@ -1057,7 +1055,7 @@ module.exports = {
 
 **注意**：style-loader需要放在css-loader的前面，因为webpack在读取使用loader的过程中，是按照从右往左的顺序读取的
 
-#### 17.4.2 less-loader
+#### 17.4.2 less-loader-less文件处理
 
 `less-loader`用来处理less文件
 
@@ -1085,7 +1083,395 @@ module.exports = {
 };
 ```
 
-#### 17.4.3 url-loader
+#### 17.4.3 图片文件处理
 
-#### 17.4.4 file-loader
+图片处理，我们可以使用url-loader处理
+
+安装`url-loader`:
+
+`npm install --save-dev url-loader`
+
+修改webpack.config.js配置文件：
+
+```json
+{
+  test: /\.(png|jpg|gif)$/i,
+  use: [
+    {
+    loader: 'url-loader',
+    options: {
+    // 当加载的图片小于limit时，会将图片编译成base64字符串的形式，大于时
+    // 当加载的图片大于limit时，需要使用file-loader模块进行加载
+    limit: 8192
+    	},
+    },
+  ],
+},
+```
+
+大于8kb的图片，需要通过file-loader来处理
+
+`file-loader`安装：
+
+`npm install --save-dev file-loader`
+
+打包好的图片文件会在dist文件夹中存储，并且图片文件名字非常长：
+
+* 这是一个32位hash值，目的是为了防止名字重复
+* 但是在真实开发中，可能对打包的图片名字有一定的要求
+* 比如，将所有的图片放在一个文件夹中，跟上图片原来的名称，同时也要防止重复
+
+因此，我们可以在options中添加以下选项：
+
+* img: 文件要打包到的文件夹
+
+* name: 获取图片原来的名字，放在该位置
+
+* hash:8：为了防止图片名称冲突，依然使用hash，但只保留8位
+
+  ```json
+  options{
+  	limit: 8192,
+  	name: 'img/[name].[hash:8].[ext]'
+  }
+  ```
+
+默认情况下，webpack会将生成的路径直接返回给使用者，但是整个程序又是在dist文件夹下打包的，因此在这里需要在路径下再添加一个dist/路径
+
+```json
+output:{
+  path: path.resolve(__dirname, 'dist'),
+  filename: 'bundle.js',
+  publicPath: 'dist/'
+},
+```
+
+#### 17.4.4 ES6语法处理
+
+babel-loader可以将ES6的语法转成ES5
+
+安装`babel-loader`:
+
+`npm install --save-dev babel-loader@7 babel-core babel-preset-es2015`
+
+配置webpack.config.js文件
+
+```json
+{
+	test: /\.m?js$/,
+	exclude: /(node_modules|bower_components)/,
+  use: {
+  loader: 'babel-loader',
+  options: {
+  	presets: ['es2015']
+  	}
+  }
+}
+```
+
+重新打包，再次查看打包生成的js文件，发现其中的内容变成了ES5的语法
+
+### 17.5 引入vue.js
+
+ 要在项目中引入vue.js，首先需要进行安装：
+
+`npm install vue --save`
+
+引入vue.js:
+
+```javascript
+import Vue from 'vue'
+
+new Vue({
+	el: '#app',
+	data:{
+		name: 'wly'
+	}
+})
+```
+
+引入的vue分为两种版本：
+
+1. runtime-only->代码中不可以有任何template
+2. Runtime-compiler->代码中，可以有template，因为有compiler可以用于编译template
+
+而引入时默认选择的版本为runtime-only版本，因此修改webpack.config.js文件，配置vue的alias
+
+```json
+resolve:{
+  alias: {
+  	'vue$':'vue/dist/vue.esm.js'
+  }
+}
+```
+
+#### 17.5.1 el和template的区别
+
+在一个项目的开发中，往往不希望频繁的对Index.html进行修改，因此我们可以：
+
+1. 定义el属性，用于和index.html中的#app进行绑定，让Vue实例之后可以管理它其中的内容
+2. 在index.html中只保留id为app的元素
+3. 在vue实例中定义一个template属性，在template属性定义元素内容
+
+代码如下：
+
+```html
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title></title>
+    </head>
+    <body>
+        <div id='app'></div>
+        <script src="./dist/bundle.js"></script>
+    </body>
+</html>
+```
+
+```javascript
+new Vue({
+    el: '#app',
+    template:`
+    <div>
+        <h2>{{message}}</h2>
+        <button @click="btnClick">点击</button>
+        <h2>{{name}}</h2>
+    </div>
+    `,
+    data: {
+        message: "Hello Webpack",
+        name:"wly"
+    },
+    methods:{
+        btnClick(){
+
+        }
+    }
+})
+```
+
+#### 17.5.2 .vue文件封装处理
+
+组件如果以.js对象的形式进行组织和使用的时候是非常不方便的：
+
+* 一方面，编写template模块非常麻烦
+* 另一方面，样式的编写也不方便
+
+因此可以使用vue文件来组织一个vue的组件
+
+```vue
+<template>
+    <div>
+        <h2 class="title">{{message}}</h2>
+        <button @click="btnClick">点击</button>
+        <h2>{{name}}</h2>
+        <cpn></cpn>
+    </div>
+</template>
+
+<script>
+import cpn from './Cpn'
+
+export default {
+    name: "App",
+    data(){
+        return {
+            message: "Hello Webpack",
+            name:"wly"
+        }
+    },
+    methods:{
+        btnClick(){
+
+        }
+    },
+    components:{
+        cpn
+    }
+}
+</script>
+<style scoped>
+    .title {
+        color: blanchedalmond;
+    }
+</style>
+```
+
+使用vue文件需要使用vue-loader以及vue-template-complier来帮助文件正确的处理和加载
+
+安装`vue-loader`和`vue-template-complier`
+
+`npm install vue-loader vue-template-complier --save-dev`
+
+ 修改webpack.config.js的配置文件：
+
+```json
+{
+	test: /\.vue$/,
+	use:['vue-loader']
+}
+```
+
+### 17.6 认识plugin
+
+#### 17.6.1 webpack的plugin
+
+* webpack中的插件，就是对webpack现有功能的各种扩展，比如打包优化，文件压缩等
+
+#### 17.6.2 loader和plugin区别
+
+* loader主要是用于转换某些类型的模块，它是一个转换器
+* plugin是插件，它是对webpack本身的扩展，是一个扩展器
+
+#### 17.6.3 plugin的使用过程
+
+1. 通过npm安装需要使用的plugins(某些webpack已经内置的插件不需要安装)
+2. 在webpack.config.js中的plugins中配置插件
+
+#### 17.6.4 plugin示例
+
+##### 17.6.4.1 添加版权的plugin
+
+该插件叫BannerPlugin，属于webpack自带的插件
+
+在webpack.config.js文件中添加以下信息：
+
+```javascript
+plugins:[
+	new webpack.BannerPlugin('最终版权归wly所有')
+]
+```
+
+重新打包文件，就可以看到生成的js文件头部生成如下的信息：
+
+```javascript
+/*! 最终版权归wly所有 */
+```
+
+##### 17.6.4.2 打包html的plugin
+
+开发中的index.html文件是存放在项目的根目录下的，但是在发布项目时发布的是dist文件夹中的内容，但是dist文件中如果没有index.html文件，那么打包的js文件也就没有了意义
+
+因此我们需要将index.html文件打包到dist文件夹中，这时可以使用`HtmlWebpackPlugin`插件
+
+`HtmlWebpackPlugin`可以：
+
+* 自动生成一个index.html文件(指定模板生成)
+* 将打包的js文件，自动通过srcipt标签插入到body中
+
+安装`HtmlWebpackPlugin`插件：
+
+`npm install html-webpack-plugin --save-dev`
+
+修改webpack.config.js文件中的plugins部分：
+
+```javascript
+plugins:[
+  new webpack.BannerPlugin('最终版权归wly所有'),
+  new HTMLWebpackPlugin({
+  	template: 'index.html'
+  })
+]
+```
+
+这里的template表示根据什么模板生成index.html
+
+##### 17.6.4.3 压缩js的plugin
+
+在项目发布之前必须要对js等文件进行压缩处理
+
+uglify-webpack-plugin是一个第三方的对js代码进行压缩的插件
+
+`npm install uglify-webpack-plugin --save-dev`
+
+修改webpack.config.js文件，添加插件：
+
+```javascript
+plugins:[
+	new UglifyWebpackPlugin()
+]
+```
+
+再次查看打包后的js文件，发现已经是被压缩过的了
+
+### 17.7 搭建本地服务器
+
+webpack提供了一个可选的本地开发服务器，这个本地服务基于node.js搭建，内部使用express框架，可以实现让浏览器自动刷新显示修改后的效果
+
+安装`webpack-dev-server`:
+
+`npm install --save-dev webpack-dev-server@2.9.1`
+
+**注意**：webpack-dev-server版本需要与webpack版本进行对应
+
+devserver作为webpack其中的一个选项，选项本身可以设置如下属性：
+
+* contentBase：为哪一个文件夹提供本地服务，默认是根文件夹，填写打包路径./dist
+* port：端口号
+* inline：页面实时刷新
+* historyApiFallback: 在SPA页面中，依赖HTML5的history模式
+
+webpack.config.js文件配置如下：
+
+```javascript
+devServer:{
+	contentBase: './dist',
+	inline: true
+}
+```
+
+另外可以在配置一个scripts：
+
+```javasrcipt
+"dev": "webpack-dev-server --open"
+```
+
+--open表示直接打开浏览器
+
+### 17.8 Vue-CLI
+
+如果只是简单写几个简单Vue的Demo程序，那么就不需要Vue CLI
+
+如果是在开发大型的项目，就必然需要使用到Vue CLI
+
+因为在使用Vue.js开发大型应用时，我们需要考虑代码目录结构、项目结构和部署、热加载、代码单元测试等事情
+
+如果每个项目都需要手动完成这些工作，那么效率无疑是低下的，所以通常我们会使用一些脚手架工具来帮助完成这个事情
+
+**CLI释义**：
+
+* CLI是Command-Line Interface，翻译为命令行界面，**俗称脚手架**
+* Vue CLI是一个官方发布的vue.js项目脚手架
+* 使用vue-cli可以快速搭建Vue开发环境以及对应的webpack配置
+
+#### 17.8.1 Vue-CLI的使用
+
+安装Vue-CLI
+
+`npm install @vue/cli -g`
+
+**注意**：目前安装的版本是Vue CLI3以上的版本，按照Vue CLI2的方式初始化项目时，是不可以的
+
+如果需要按照Vue CLI2的方式初始化项目，则需要拉取Vue CLI2模板（旧版本）
+
+```sh
+npm install -g @vue/cli-init
+# `vue init` 的运行效果将会跟 `vue-cli@2.x` 相同
+vue init webpack my-project
+```
+
+Vue CLI3以上初始化项目指令
+
+```sh
+vue create hello-world
+```
+
+#### 17.8.2 Vue-CLI2详解
+
+![image-20200613092921999](https://img-blog.csdnimg.cn/img_convert/55ed21c0add7cf9ac8a5a0826738b856.png)
+
+#### 17.8.3 Vue-CLI2目录结构解析
+
+![使用vue-cli2初始化项目和目录结构解析_webchang的博客-CSDN博客](https://img-blog.csdnimg.cn/20210117105238443.png)
 
