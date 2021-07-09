@@ -3,7 +3,7 @@ code recorded in the process of learning vue
 
 ## 1-vue初体验
 
-程序位：LearnVuejs01\01-Vue初体验\01-HelloVuejs.html
+程序位置：LearnVuejs01\01-Vue初体验\01-HelloVuejs.html
 
 + 代码创建了一个Vue对象
 + 创建Vue对象的时候，传入了一些options:{}
