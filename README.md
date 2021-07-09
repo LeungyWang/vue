@@ -3,7 +3,7 @@ code recorded in the process of learning vue
 
 ## 1-vue初体验
 
-程序位置:E:\Vue\LearnVuejs01\01-Vue初体验\01-HelloVuejs.html
+程序位：LearnVuejs01\01-Vue初体验\01-HelloVuejs.html
 
 + 代码创建了一个Vue对象
 + 创建Vue对象的时候，传入了一些options:{}
@@ -1928,4 +1928,9 @@ vue-router传递参数主要有两种类型：params和query
   </template>
   ```
 
-  
+
+#### 17.10.10 `$route`和`$router`的区别
+
+`this.$route`: 当前激活的路由的信息对象。每个对象都是局部的，可以获取当前路由的path, name, paramsm, query等属性
+
+`this.$router`: 全局的router实例。通过vue跟实例中注入router实例，然后再注入到每个子组件中，从而让整个应用都路由功能。其中包含了很多属性和对象(比如history对象)，任何页面都可以调用其push(), place(), go()等方法
