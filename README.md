@@ -1475,3 +1475,457 @@ vue create hello-world
 
 ![使用vue-cli2初始化项目和目录结构解析_webchang的博客-CSDN博客](https://img-blog.csdnimg.cn/20210117105238443.png)
 
+#### 17.8.4 Runtime-Compiler和Runtime-only的区别
+
+简单总结：
+
+* 如果在之后的开发中，依然使用template，就需要选择Runtime-Compiler
+* 如果使用.vue文件进行开发，可以选择Runtime-only
+
+#### 17.8.5 vue程序运行过程
+
+![Vue程序运行过程_九色鹿-CSDN博客_vue程序运行过程](https://img-blog.csdnimg.cn/20200101163454894.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1hpZGlhbjI4NTA=,size_16,color_FFFFFF,t_70)
+
+#### 17.8.5 render函数的使用
+
+```javascript
+new Vue({
+  el: '#app',
+  render: function(createElement){
+    // 1. 使用方法一：CreateElement('标签', {标签的属性}, [''])
+    return createElement('h2', {class: 'box'}, ['Hello World',
+    createElement('button',['按钮'])
+      ])
+    // 2. 使用方法二：直接传入组件对象
+    return createElement(App)
+  }
+})
+```
+
+#### 17.8.6 npm run dev流程解析
+
+![Vue CLI的使用- 爱代码三千- 博客园](https://img2018.cnblogs.com/blog/1757428/202002/1757428-20200217184436796-1255259098.png)
+
+### 17.9 Vue-CLI3
+
+#### 17.9.1 vue-cli3与2版本的区别
+
+* vue-cli3是基于webpack4打造，vue-cli2还是webpack3
+* vue-cli3的设计原则是”0配置“，移除的配置文件根目录下，build和config等目录
+* vue-cli3提供了vue-ui命令，提供了可视化的配置，更加人性化
+* 移除了static文件夹，新增了public文件夹，并将index.html移动到public中
+
+#### 17.9.2 vue-cli3目录结构详解
+
+![VueCLI3创建项目和目录结构_vfjcgg的博客-CSDN博客](https://img-blog.csdnimg.cn/20200628153330387.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3ZmamNnZw==,size_16,color_FFFFFF,t_70)
+
+#### 17.9.3 VUE-UI
+
+vue ui打开指令：
+
+```sh
+vue ui
+```
+
+vue ui界面：
+
+![Create A New Vue Js Framework Application - Yuimo Blog](https://yuimo.blog/assets/static/vue_ui.42db587.23d08891d71250b56fcf6f6878ab573f.jpg)
+
+### 17.10 Vue-Router
+
+#### 17.10.1 什么是路由
+
+路由是一个网络工程里面的术语，**路由（routing）**就是通过互联的网络把信息从源地址传输到目的地址的活动
+
+生活中的路由器提供了两种机制：路由和传送
+
+* 路由是决定数据包从来源到目的地的路径
+* 将输入端的数据转移到合适的输出端
+
+路由中有一个非常重要的概念叫路由表
+
+* 路由表本质上就是一个映射表，决定了数据包的指向
+
+#### 17.10.2 后端路由阶段
+
+早期的网站开发整个HTML页面是由服务器来渲染的，服务器直接生产渲染好对应的HTML页面，返回给客户端进行展示
+
+服务器处理网站页面流程：
+
+* 一个页面有自己对应的网址也就是URL
+* URL会发送到服务器，服务器会通过正则对该URL进行匹配，并且最后交给一个Controller处理
+* Controller进行各种处理，最终生成HTML或者数据，返回前端
+* 这样就完成了一个IO操作
+
+上面的这种操作就是后端路由
+
+* 当页面中需要请求不同的路径内容时，交给服务器来进行处理，服务器渲染好整个页面，并且将页面返回给客户端
+* 这种情况下渲染好的页面，不要要单独加载任何的js和css，可以直接交给浏览器展示，这样也有利于SEO的优化
+
+后端路由的缺点：
+
+* 一种情况时整个页面的模块由后端人员来编写和维护
+* 另一种情况是前端开发人员如果要开发页面，需要通过PHP和JAVA等语言来编写页面代码
+* 而且通常情况下HTML代码和数据以及对应的逻辑会混在一起，编写和维护都是非常糟糕的事情17.
+
+#### 17.10.3 前后端分离阶段
+
+随着Ajax的出现，有了前后端的开发模式：
+
+* 后端只提供API来返回数据，前端通过Ajax获取数据，并且可以通过JavaScript将数据渲染到页面中
+* 这样做最大的优点就是前后端责任的清晰，后端专注与数据上，前端专注于交互和可视化上
+* 并且当移动端（IOS/Android）出现后，后端不需要进行任何处理，依然使用之前的一套API即可
+* 目前很多的网站依然使用这种模式开发
+
+#### 17.10.4 单页面富应用阶段
+
+SPA最主要的特点就是在前后端分离的基础上加了一层前端路由：也就是前端来维护一套路由规则
+
+SPA：整个网页只有一个html页面(index.html + css +js) 因此必须配置前端路由
+
+前端路由的核心是：改变URL，但是页面不进行整体的刷新，这里有几种实现方式
+
+##### 17.10.4.1 URL的hash
+
+URL的hash也就是锚点(#)，本质上是改变window.location的href属性.
+
+我们可以通过直接赋值location.hash来改变href，但是页面不发生刷新
+
+```javascript
+location.hash = '/'
+```
+
+##### 17.10.4.2 HTML5的history模式：pushState
+
+可以通过history.pushState(data, title, url)指令改变href，页面不发送刷新
+
+```javascript
+history.pushState({}, '', '/')
+```
+
+可以通过history.back()返回上一级href
+
+```javascript
+history.back()
+```
+
+##### 17.10.4.3 HTML5的history模式：replaceState
+
+可以通过history.replaceState(data, title, url)指令改变href，页面不发送刷新
+
+```javascript
+history.replaceState({}, '', '/foo/bar')
+```
+
+不能够返回上一级href
+
+##### 17.10.4.3 HTML5的history模式：go
+
+控制浏览器界面的前进和后退
+
+history.back()等价于history.go(-1) 回到前面一个页面
+
+history.forward()等价于history.go(1) 前进到下一个页面
+
+#### 17.10.5 安装和使用vue-router
+
+使用npm来安装路由
+
+```sh
+npm install vue-router --save
+```
+
+在模块化的工程中使用它，vue-router是一个插件，所以可以通过Vue.use()来安装路由功能
+
+* step1：导入路由对象，并且调用Vue.use(VueRouter）
+* step2: 创建路由实例，并且传入路由映射配置
+* step3：在Vue实例中挂载创建的路由实例
+
+#### 17.10.6 使用vue-router的步骤
+
+* step1：创建路由组件
+* step2：配置路由映射：组件和路径映射关系
+* step3：使用路由：通过`<router-link>`和`<router-view>`
+  * `<router-link>`：该标签是一个vue-router中已经内置的组件，它会被渲染成一个`<a>`标签
+  * `<router-view>`：该标签会根据当前的路径，动态渲染出不同的组件
+  * 网页的其他内容，比如顶部的标题/导航，或者底部的一些版权信息等会和`<router-view>`处于同一个等级
+  * 在路由切换时，切换的是`<router-view>`：挂载的组件，其他内容不会发生改变
+
+##### 17.10.6.1 路由的默认路径
+
+通常情况，进入网站的首页，我们希望`<router-view>`渲染首页组件
+
+这种情况下，我们只需要配置多一个映射就可以了
+
+```javascript
+const routes = [
+  {
+	path: '/',
+	redirect: '/home'
+  }
+]
+```
+
+配置解析：
+
+* 我们在routes中又配置了一个映射
+* path配置的是根路径：/
+* redirect是重定向，也就是将根路径重定向到/home的路径下，这样就可以得到想要的效果
+
+##### 17.10.6.2 router-link补充
+
+`<router-link>`基本属性：
+
+* `to`属性：用于指定跳转的路径
+
+* `tag`属性：tag可以指定`<router-link>`之后渲染成什么组件，比如下面的代码会被渲染成一个`<li>`元素而不是`<a>`元素
+
+  ```html
+  <router-link to='/home' tag='li'>
+  ```
+
+* `replace`属性：replace不会留下history记录，所以指定replace的情况下，后退键返回不能返回到上一个页面中
+
+* `active-class`属性：当`<router-link>`对应的路由匹配成功时，会自动给当前元素设置一个`router-link-active`的class，设置active-class可以修改默认的名称
+
+  * 在进行高亮显示的导航栏菜单或者底部tabbar时，会使用到该类
+
+  * 但是通常不会修改类的属性，会直接使用默认的router-link-active即可
+
+  * 另外也可以在创建router时，可以修改linkActiveClass的值从而指定`router-link-active`class的具体名称
+
+    ```javascript
+    const router = new VueRouter({
+        routes,
+        mode:'history',
+        linkActiveClass: 'active'
+    })
+    ```
+
+
+#### 17.10.7 路由的懒加载
+
+官方给出的解释：
+
+* 当打包构建应用时，Javascript包会变得非常大，影响页面加载
+* 如果能把不通路由对应的组件分割成不同的代码块，然后当路由被访问的时候才加载对应组件，这样就更高效
+
+引用后直接使用:
+
+```javascript
+import Home from '../components/Home'
+import About from '../components/About'
+
+Vue.use(VueRouter)
+
+const routes = [
+  {
+	path: '/home',
+    component: Home
+  },
+  {
+	path: 'About',
+    component: About
+  }
+]
+```
+
+路由懒加载的方式：
+
+方式一：结合Vue的异步组件和Webpack的代码分析.
+
+```javascript
+const Home = resolve => {require.ensure(['../components/Home.vue'], ()=>{resolve(require('../components/Home.vue'))})}
+```
+
+方式二：AMD写法
+
+```javascript
+const About = resolve => require(['../components/About.vue'], resolve)
+```
+
+方式三：在ES6中，可以有更简单的写法来组织Vue异步组件和Webpack的代码分割
+
+```javascript
+const Home = () => import('../components/Home.vue')
+```
+
+路由懒加载：
+
+```javascript
+const Home = () => import('../components/Home')
+const About = () => import('../components/About')
+
+const routes = [
+  {
+	path: '/home',
+    component: () => import('../components/Home')
+  },
+  {
+	path: 'About',
+    component: () => import('../components/About')
+  }
+]
+```
+
+#### 17.10.8 嵌套路由
+
+嵌套路由是一个很常见的功能，比如在Home页面中，希望通过/home/news和/home/message访问一些内容
+
+一个路径映射一个组件，访问这两个路径也会分别渲染两个组件
+
+路径和组件的关系如下：
+
+``` mermaid
+graph LR
+/home --> Home组件
+/home --> /news
+/home --> /message
+/news --> News组件
+/message --> Message组件
+/about --> About组件
+```
+
+实现嵌套路由的两个步骤：
+
+Step1. 创建对应的子组件，并且在路由映射中配置对应的子路由
+
+Step2. 在组件内部使用`<router-views>`标签
+
+代码示例：
+
+```javascript
+const routes = [
+  {
+    path:'',
+    redirect:'home'
+  },
+  {
+    path:'/home',
+    component:Home,
+    children:[
+      {
+        path: '',
+        redirect: 'news'
+      },
+      {
+        path: 'news',
+        component:HomeNews
+      },
+      {
+        path: 'message',
+        component: HomeMessage
+      }
+    ]
+  },
+  {
+    path:'/about',
+    component:About
+  }
+]
+```
+
+#### 17.10.9 传递参数的方式
+
+vue-router传递参数主要有两种类型：params和query
+
+**params的类型**：
+
+* 配置路由格式：/router/:id
+
+* 传递的方式：在path后面跟上对应的值
+
+* 传递后形成的路径：/router/123, /router/abc
+
+* `<router-link>`传递参数：
+
+  ```vue
+  <router-link :to="'/user/'+userId" >用户</router-link>
+  ```
+
+* JavaScript代码传递参数：
+
+  ```vue
+  // App.vue
+  <script>
+  export default {
+    name: 'App',
+    data(){
+      return {
+        userId: 'lisi'
+      }
+    },
+    methods: {
+      userClick(){
+        this.$router.push('/user/'+this.userId)
+      }
+    },
+  }
+  </script>
+  ```
+  
+  
+  
+* 引用方式示例代码：
+
+  ```vue
+  <template>
+      <div>
+          <h2>用户界面</h2>
+          <p>用户相关信息</p>
+           <h2>{{userId}}</h2>
+           <h2>{{$route.params.userId}}</h2>
+      </div>
+  </template>
+  ```
+
+**query**的类型：
+
+* 配置路由格式：/router,也就是普通配置
+
+* 传递的方式：对象中使用query的key作为传递方式
+
+* 传递后形成的路径：/router?id=123, /router?id=abc
+
+* `<router-link>`传递参数方式
+
+  ```vue
+  <router-link :to="{path: '/profile', query:{name:'wly', age:18, height:1.88}}">档案<router-link>
+  ```
+
+* JavaScript代码传递参数方式
+
+  ```vue
+  <script>
+  export default {
+    name: 'App',
+    methods: {
+      profileClick(){
+        this.$router.push({
+          path:'/profile',
+          query:{
+            name: 'wly',
+          age:19,
+            height:1.87
+          }
+        })
+      }
+    }
+  }
+  </script>
+  ```
+  
+* 引用方式示例代码：
+
+  ```vue
+  <template>
+      <div>
+          <h2>Profile组件</h2>
+          <h2>{{$route.query.name}}</h2>
+          <h2>{{$route.query.age}}</h2>
+          <h2>{{$route.query.height}}</h2>
+      </div>
+  </template>
+  ```
+
+  
