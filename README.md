@@ -1,4 +1,4 @@
-#  nvue
+#  vue
 code recorded in the process of learning vue
 
 ## 1-vue初体验
@@ -1429,7 +1429,7 @@ devServer:{
 
 --open表示直接打开浏览器
 
-### 17.8 Vue-CLI
+##  18 Vue-CLI
 
 如果只是简单写几个简单Vue的Demo程序，那么就不需要Vue CLI
 
@@ -1445,7 +1445,7 @@ devServer:{
 * Vue CLI是一个官方发布的vue.js项目脚手架
 * 使用vue-cli可以快速搭建Vue开发环境以及对应的webpack配置
 
-#### 17.8.1 Vue-CLI的使用
+### 18.1 Vue-CLI的使用
 
 安装Vue-CLI
 
@@ -1467,26 +1467,26 @@ Vue CLI3以上初始化项目指令
 vue create hello-world
 ```
 
-#### 17.8.2 Vue-CLI2详解
+### 18.2 Vue-CLI2详解
 
 ![image-20200613092921999](https://img-blog.csdnimg.cn/img_convert/55ed21c0add7cf9ac8a5a0826738b856.png)
 
-#### 17.8.3 Vue-CLI2目录结构解析
+#### 18.2.1 Vue-CLI2目录结构解析
 
 ![使用vue-cli2初始化项目和目录结构解析_webchang的博客-CSDN博客](https://img-blog.csdnimg.cn/20210117105238443.png)
 
-#### 17.8.4 Runtime-Compiler和Runtime-only的区别
+### 18.3 Runtime-Compiler和Runtime-only的区别
 
 简单总结：
 
 * 如果在之后的开发中，依然使用template，就需要选择Runtime-Compiler
 * 如果使用.vue文件进行开发，可以选择Runtime-only
 
-#### 17.8.5 vue程序运行过程
+### 18.4 vue程序运行过程
 
 ![Vue程序运行过程_九色鹿-CSDN博客_vue程序运行过程](https://img-blog.csdnimg.cn/20200101163454894.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1hpZGlhbjI4NTA=,size_16,color_FFFFFF,t_70)
 
-#### 17.8.5 render函数的使用
+### 18.5 render函数的使用
 
 ```javascript
 new Vue({
@@ -1502,24 +1502,24 @@ new Vue({
 })
 ```
 
-#### 17.8.6 npm run dev流程解析
+### 18.6 npm run dev流程解析
 
 ![Vue CLI的使用- 爱代码三千- 博客园](https://img2018.cnblogs.com/blog/1757428/202002/1757428-20200217184436796-1255259098.png)
 
-### 17.9 Vue-CLI3
+## 19 Vue-CLI3
 
-#### 17.9.1 vue-cli3与2版本的区别
+### 19.1 vue-cli3与2版本的区别
 
 * vue-cli3是基于webpack4打造，vue-cli2还是webpack3
 * vue-cli3的设计原则是”0配置“，移除的配置文件根目录下，build和config等目录
 * vue-cli3提供了vue-ui命令，提供了可视化的配置，更加人性化
 * 移除了static文件夹，新增了public文件夹，并将index.html移动到public中
 
-#### 17.9.2 vue-cli3目录结构详解
+### 19.2 vue-cli3目录结构详解
 
 ![VueCLI3创建项目和目录结构_vfjcgg的博客-CSDN博客](https://img-blog.csdnimg.cn/20200628153330387.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3ZmamNnZw==,size_16,color_FFFFFF,t_70)
 
-#### 17.9.3 VUE-UI
+### 19.3 VUE-UI
 
 vue ui打开指令：
 
@@ -1531,9 +1531,9 @@ vue ui界面：
 
 ![Create A New Vue Js Framework Application - Yuimo Blog](https://yuimo.blog/assets/static/vue_ui.42db587.23d08891d71250b56fcf6f6878ab573f.jpg)
 
-### 17.10 Vue-Router
+## 20 Vue-Router
 
-#### 17.10.1 什么是路由
+### 20.1 什么是路由
 
 路由是一个网络工程里面的术语，**路由（routing）**就是通过互联的网络把信息从源地址传输到目的地址的活动
 
@@ -1546,7 +1546,7 @@ vue ui界面：
 
 * 路由表本质上就是一个映射表，决定了数据包的指向
 
-#### 17.10.2 后端路由阶段
+### 20.2 后端路由阶段
 
 早期的网站开发整个HTML页面是由服务器来渲染的，服务器直接生产渲染好对应的HTML页面，返回给客户端进行展示
 
@@ -1568,7 +1568,7 @@ vue ui界面：
 * 另一种情况是前端开发人员如果要开发页面，需要通过PHP和JAVA等语言来编写页面代码
 * 而且通常情况下HTML代码和数据以及对应的逻辑会混在一起，编写和维护都是非常糟糕的事情17.
 
-#### 17.10.3 前后端分离阶段
+### 20.3 前后端分离阶段
 
 随着Ajax的出现，有了前后端的开发模式：
 
@@ -1577,7 +1577,7 @@ vue ui界面：
 * 并且当移动端（IOS/Android）出现后，后端不需要进行任何处理，依然使用之前的一套API即可
 * 目前很多的网站依然使用这种模式开发
 
-#### 17.10.4 单页面富应用阶段
+### 20.4 单页面富应用阶段
 
 SPA最主要的特点就是在前后端分离的基础上加了一层前端路由：也就是前端来维护一套路由规则
 
@@ -1585,7 +1585,7 @@ SPA：整个网页只有一个html页面(index.html + css +js) 因此必须配�
 
 前端路由的核心是：改变URL，但是页面不进行整体的刷新，这里有几种实现方式
 
-##### 17.10.4.1 URL的hash
+#### 20.4.1 URL的hash
 
 URL的hash也就是锚点(#)，本质上是改变window.location的href属性.
 
@@ -1595,7 +1595,7 @@ URL的hash也就是锚点(#)，本质上是改变window.location的href属性.
 location.hash = '/'
 ```
 
-##### 17.10.4.2 HTML5的history模式：pushState
+#### 20.4.2 HTML5的history模式：pushState
 
 可以通过history.pushState(data, title, url)指令改变href，页面不发送刷新
 
@@ -1609,7 +1609,7 @@ history.pushState({}, '', '/')
 history.back()
 ```
 
-##### 17.10.4.3 HTML5的history模式：replaceState
+#### 20.4.3 HTML5的history模式：replaceState
 
 可以通过history.replaceState(data, title, url)指令改变href，页面不发送刷新
 
@@ -1619,7 +1619,7 @@ history.replaceState({}, '', '/foo/bar')
 
 不能够返回上一级href
 
-##### 17.10.4.3 HTML5的history模式：go
+#### 20.4.4 HTML5的history模式：go
 
 控制浏览器界面的前进和后退
 
@@ -1627,7 +1627,7 @@ history.back()等价于history.go(-1) 回到前面一个页面
 
 history.forward()等价于history.go(1) 前进到下一个页面
 
-#### 17.10.5 安装和使用vue-router
+### 20.5 安装和使用vue-router
 
 使用npm来安装路由
 
@@ -1641,7 +1641,7 @@ npm install vue-router --save
 * step2: 创建路由实例，并且传入路由映射配置
 * step3：在Vue实例中挂载创建的路由实例
 
-#### 17.10.6 使用vue-router的步骤
+#### 20.5.1 使用vue-router的步骤
 
 * step1：创建路由组件
 * step2：配置路由映射：组件和路径映射关系
@@ -1651,7 +1651,7 @@ npm install vue-router --save
   * 网页的其他内容，比如顶部的标题/导航，或者底部的一些版权信息等会和`<router-view>`处于同一个等级
   * 在路由切换时，切换的是`<router-view>`：挂载的组件，其他内容不会发生改变
 
-##### 17.10.6.1 路由的默认路径
+#### 20.5.2 路由的默认路径
 
 通常情况，进入网站的首页，我们希望`<router-view>`渲染首页组件
 
@@ -1672,7 +1672,7 @@ const routes = [
 * path配置的是根路径：/
 * redirect是重定向，也就是将根路径重定向到/home的路径下，这样就可以得到想要的效果
 
-##### 17.10.6.2 router-link补充
+#### 20.5.3 router-link补充
 
 `<router-link>`基本属性：
 
@@ -1703,7 +1703,7 @@ const routes = [
     ```
 
 
-#### 17.10.7 路由的懒加载
+### 20.6 路由的懒加载
 
 官方给出的解释：
 
@@ -1768,7 +1768,7 @@ const routes = [
 ]
 ```
 
-#### 17.10.8 嵌套路由
+### 20.7 嵌套路由
 
 嵌套路由是一个很常见的功能，比如在Home页面中，希望通过/home/news和/home/message访问一些内容
 
@@ -1825,7 +1825,7 @@ const routes = [
 ]
 ```
 
-#### 17.10.9 传递参数的方式
+### 20.8 传递参数的方式
 
 vue-router传递参数主要有两种类型：params和query
 
@@ -1929,8 +1929,96 @@ vue-router传递参数主要有两种类型：params和query
   ```
 
 
-#### 17.10.10 `$route`和`$router`的区别
+### 20.9 `$route`和`$router`的区别
 
 `this.$route`: 当前激活的路由的信息对象。每个对象都是局部的，可以获取当前路由的path, name, paramsm, query等属性
 
 `this.$router`: 全局的router实例。通过vue跟实例中注入router实例，然后再注入到每个子组件中，从而让整个应用都路由功能。其中包含了很多属性和对象(比如history对象)，任何页面都可以调用其push(), place(), go()等方法
+
+### 20.10 导航守卫
+
+**为什么要使用导航守卫**：
+
+考虑一个需求：在一个SPA应用，如何改变网页的标题？
+
+网页标题是通过`<title>`来显示的，但是SPA只有一个固定的HTML，切换不同的页面时，标题并不会改变。但是我们可以选择JavaScript来修改`<title>`的内容. window.document.title = 'new title'
+
+那在普通的vue项目中，应该如何修改呢？
+
+**普通的修改方式**:
+
+* 比较容易想到的修改标题的位置是每一个路由器对应的组件.vue组件中
+* 通过mounted声明周期函数，执行对应的代码进行修改即可
+* 当页面比较多的时候，这种方式不容已维护(因为需要在多个页面执行类似的代码)
+
+这时候就可以用到**导航守卫**
+
+#### 20.10.1 全局前置守卫
+
+可以使用 `router.beforeEach` 注册一个全局前置守卫，来完成标题的修改
+
+```js
+const router = new VueRouter({ ... })
+
+router.beforeEach((to, from, next) => {
+  // ...
+})
+```
+
+每个守卫方法接收三个参数：
+
+* **`to:Route`**:即将要进入的目标 [路由对象](https://router.vuejs.org/zh/api/#路由对象)
+* **`from: Route`**: 当前导航正要离开的路由
+* **`next: Function`**: 一定要调用该方法来 **resolve** 这个钩子。执行效果依赖 `next` 方法的调用参数
+
+#### 20.10.2 全局后置钩子
+
+你也可以注册全局后置钩子，然而和守卫不同的是，这些钩子不会接受 `next` 函数也不会改变导航本身：
+
+```js
+router.afterEach((to, from) => {
+  // ...
+})
+```
+
+#### 20.10.3 路由独享的守卫
+
+可以在路由配置上直接定义 `beforeEnter` 守卫：
+
+```js
+const router = new VueRouter({
+  routes: [
+    {
+      path: '/foo',
+      component: Foo,
+      beforeEnter: (to, from, next) => {
+        // ...
+      }
+    }
+  ]
+})
+```
+
+这些守卫与全局前置守卫的方法参数是一样的。
+
+### 20.11 keep-alive
+
+**`keep-alive`**是Vue内置的一个组件，可以使被包含的组件保留状态，或避免重新渲染
+
+**属性**：
+
+- `include` - 字符串或正则表达式。只有名称匹配的组件会被缓存。
+- `exclude` - 字符串或正则表达式。任何名称匹配的组件都不会被缓存。
+- `max` - 数字。最多可以缓存多少组件实例
+
+当`router-view`也是一个组件，如果直接被包在keep-alive里面，所有路径匹配到的视图组件都会被缓存:
+
+```vue
+<keep-alive>
+	<router-view>
+		<!-- 所有路径匹配到的视图组件都会被缓存 -->
+	</router-view>
+</keep-alive>
+```
+
+当组件在 `<keep-alive>` 内被切换，它的 `activated` 和 `deactivated` 这两个生命周期钩子函数将会被对应执行。

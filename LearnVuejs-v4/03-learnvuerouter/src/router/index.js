@@ -18,16 +18,19 @@ Vue.use(VueRouter)
 const routes = [
   {
     path:'',
-    redirect:'home'
+    redirect:'home',
   },
   {
     path:'/home',
     component:Home,
+    meta:{
+      title:'Home'
+    },
     children:[
-      {
-        path: '',
-        redirect: 'news'
-      },
+      // {
+      //   path: '',
+      //   redirect: 'news'
+      // },
       {
         path: 'news',
         component:HomeNews
@@ -40,7 +43,14 @@ const routes = [
   },
   {
     path:'/about',
-    component:About
+    meta:{
+      title:'About'
+    },
+    component:About,
+    beforeEnter:(to, from, next)=>{
+      console.log('About beforeEnter');
+      next()
+    }
   },
   {
     path:'/user/:userId',
@@ -70,6 +80,20 @@ const router = new VueRouter({
     routes,
     mode:'history',
     linkActiveClass: 'active'
+})
+
+// 前置守卫(guard)
+router.beforeEach((to, from, next)=>{
+  // 从from跳转到to
+  // console.log(to);
+  document.title = to.matched[0].meta.title
+  console.log('+++++');
+  next()
+})
+
+// 后置守卫(guard)
+router.afterEach((to, from)=>{
+  console.log('-----');
 })
 
 // 3. 将Router对象传入到实例中
